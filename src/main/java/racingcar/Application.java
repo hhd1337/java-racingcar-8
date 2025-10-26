@@ -8,6 +8,8 @@ import racingcar.domain.move.MoveStrategy;
 import racingcar.domain.move.RandomMoveStrategy;
 import racingcar.support.CarNameInputParser;
 import racingcar.support.CarNamesValidator;
+import racingcar.support.TryCountInputParser;
+import racingcar.support.TryCountValidator;
 import racingcar.view.InputView;
 import racingcar.view.OutputView;
 
@@ -15,7 +17,9 @@ public class Application {
     public static void main(String[] args) {
         MoveStrategy moveStrategy = new RandomMoveStrategy();
         CarNameInputParser carNameInputParser = new CarNameInputParser();
+        TryCountInputParser tryCountInputParser = new TryCountInputParser();
         CarNamesValidator carNamesValidator = new CarNamesValidator();
+        TryCountValidator tryCountValidator = new TryCountValidator();
         InputView inputView = new InputView();
         OutputView outputView = new OutputView();
 
@@ -29,7 +33,6 @@ public class Application {
 
         // car 생성 및 리스트에 add
         List<Car> carList = new ArrayList<>();
-
         for (String name : carNamesList) {
             carList.add(new Car(name));
         }
@@ -38,9 +41,11 @@ public class Application {
 
         // 시도할 횟수 입력
         outputView.printTryCountNotice();
-        int tryCount = Integer.parseInt(inputView.readLine());
+        String tryCountRaw = inputView.readLine();
 
-        // TODO : 시도할 횟수 입력값 검증
+        // 시도할 횟수 입력값 검증
+        int tryCount = tryCountInputParser.parse(tryCountRaw);
+        tryCountValidator.validate(tryCount);
 
         // 실행결과 출력
         outputView.printRaceStartHeader();
