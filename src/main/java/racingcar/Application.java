@@ -25,8 +25,6 @@ public class Application {
 
         // TODO : 시도할 횟수 입력값 검증
 
-
-
         // TODO : 실행결과 출력, 최종우승자 출력
     }
 }
