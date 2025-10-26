@@ -28,23 +28,7 @@ public class OutputView {
     }
     // 최종우승자 출력
     public void printWinners(Cars cars) {
-        int maxPosition = 0;
-
-        // 가장 큰 position값 찾음
-        for (Car car : cars.getCars()) {
-            if (car.getPosition() > maxPosition) {
-                maxPosition = car.getPosition();
-            }
-        }
-        // position이 가장 큰 자동차들 리스트에 저장
-        List<String> winners = new ArrayList<>();
-        for (Car car : cars.getCars()) {
-            if (car.getPosition() == maxPosition) {
-                winners.add(car.getName());
-            }
-        }
-        // 이름 합쳐 출력
-        String winnerNames = String.join(", ", winners);
-        System.out.println("최종 우승자 : " + winnerNames);
+        List<String> winners = cars.getWinnerNames();
+        System.out.println("최종 우승자 : " + String.join(", ", winners));
     }
 }
