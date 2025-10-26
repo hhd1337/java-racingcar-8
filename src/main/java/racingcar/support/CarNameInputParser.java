@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CarNameInputParser {
 
-    public static List<String> parseCarNames (String input) {
+    public List<String> parseCarNames (String input) {
 
         if (input == null || input.isBlank()) {
             throw new IllegalArgumentException("자동차 이름 입력이 비어 있습니다.");
