@@ -7,6 +7,7 @@ import racingcar.domain.Cars;
 import racingcar.domain.move.MoveStrategy;
 import racingcar.domain.move.RandomMoveStrategy;
 import racingcar.support.CarNameInputParser;
+import racingcar.support.CarNamesValidator;
 import racingcar.view.InputView;
 import racingcar.view.OutputView;
 
@@ -14,6 +15,7 @@ public class Application {
     public static void main(String[] args) {
         MoveStrategy moveStrategy = new RandomMoveStrategy();
         CarNameInputParser carNameInputParser = new CarNameInputParser();
+        CarNamesValidator carNamesValidator = new CarNamesValidator();
         InputView inputView = new InputView();
         OutputView outputView = new OutputView();
 
@@ -21,8 +23,9 @@ public class Application {
         outputView.printCarNameNotice();
         String carNamesInput = inputView.readLine();
 
+        // 입력 파싱, 검증
         List<String> carNamesList = carNameInputParser.parseCarNames(carNamesInput); // 파싱
-        // TODO : 자동차 이름 입력 문자열 검증,예외처리
+        carNamesValidator.validate(carNamesList); // 검증, 예외처리
 
         // car 생성 및 리스트에 add
         List<Car> carList = new ArrayList<>();
