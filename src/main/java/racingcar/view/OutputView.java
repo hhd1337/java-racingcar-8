@@ -1,5 +1,10 @@
 package racingcar.view;
 
+import java.util.ArrayList;
+import java.util.List;
+import racingcar.domain.Car;
+import racingcar.domain.Cars;
+
 public class OutputView {
     public void printCarNameNotice() {
         System.out.println("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)");
@@ -8,16 +13,38 @@ public class OutputView {
         System.out.println("시도할 횟수는 몇 회인가요?");
     }
     public void printRaceStartHeader() {
-        System.out.println("실행 결과");
+        System.out.println("\n실행 결과");
     }
     // 차수별 실행결과 출력
-    public void printRoundResult(String name, int distance) {
-        System.out.println(name + " : ");
-        for (int i = 1; i <= distance; i++) {
-            System.out.println("-");
+    public void printRoundResult(Cars cars) {
+        for (Car car : cars.getCars()) {
+            System.out.print(car.getName() + " : ");
+            for (int i = 0; i < car.getPosition(); i++) {
+                System.out.print("-");
+            }
+            System.out.println();
         }
+        System.out.println();
     }
-    public void printWinners(String names) {
-        System.out.println("최종 우승자 : " + names);
+    // 최종우승자 출력
+    public void printWinners(Cars cars) {
+        int maxPosition = 0;
+
+        // 가장 큰 position값 찾음
+        for (Car car : cars.getCars()) {
+            if (car.getPosition() > maxPosition) {
+                maxPosition = car.getPosition();
+            }
+        }
+        // position이 가장 큰 자동차들 리스트에 저장
+        List<String> winners = new ArrayList<>();
+        for (Car car : cars.getCars()) {
+            if (car.getPosition() == maxPosition) {
+                winners.add(car.getName());
+            }
+        }
+        // 이름 합쳐 출력
+        String winnerNames = String.join(", ", winners);
+        System.out.println("최종 우승자 : " + winnerNames);
     }
 }
