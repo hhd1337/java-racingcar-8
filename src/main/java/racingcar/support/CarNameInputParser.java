@@ -5,6 +5,8 @@ import java.util.List;
 
 public class CarNameInputParser {
 
+    private static final String NAME_SEPARATOR = ",";
+
     public List<String> parseCarNames (String input) {
 
         if (input == null || input.isBlank()) {
@@ -13,7 +15,7 @@ public class CarNameInputParser {
 
         // split 후 ArrayList에 담음
         List<String> carNames = new ArrayList<>();
-        String[] parsedNames = input.split(",");
+        String[] parsedNames = input.split(NAME_SEPARATOR);
 
         for (int i = 0; i < parsedNames.length; i++) {
             carNames.add(parsedNames[i].trim());
