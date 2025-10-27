@@ -23,41 +23,64 @@ public class RacingGameController {
     private final MoveStrategy moveStrategy;
 
     public RacingGameController() {
-        inputView = new InputView();
-        outputView = new OutputView();
-        carNameInputParser = new CarNameInputParser();
-        tryCountInputParser = new TryCountInputParser();
-        carNamesValidator = new CarNamesValidator();
-        tryCountValidator = new TryCountValidator();
-        moveStrategy = new RandomMoveStrategy();
+        this.inputView = new InputView();
+        this.outputView = new OutputView();
+        this.carNameInputParser = new CarNameInputParser();
+        this.tryCountInputParser = new TryCountInputParser();
+        this.carNamesValidator = new CarNamesValidator();
+        this.tryCountValidator = new TryCountValidator();
+        this.moveStrategy = new RandomMoveStrategy();
     }
 
     public void run() {
+        Cars cars = setupCars();
+        int tryCount = requestTryCount();
+
+        startRace(cars, tryCount);
+        showWinners(cars);
+    }
+
+    private Cars setupCars() {
         outputView.printCarNameNotice();
-        String carNamesInput = inputView.readLine();
+        String raw = inputView.readLine();
 
-        List<String> carNamesList = carNameInputParser.parseCarNames(carNamesInput);
-        carNamesValidator.validate(carNamesList);
+        List<String> names = parseAndValidateCarNames(raw);
+        List<Car> carList = buildCars(names);
+        return new Cars(carList);
+    }
 
-        List<Car> carList = new ArrayList<>();
-        for (String name : carNamesList) {
-            carList.add(new Car(name));
-        }
-
-        Cars cars = new Cars(carList);
-
+    private int requestTryCount() {
         outputView.printTryCountNotice();
-        String tryCountRaw = inputView.readLine();
+        String raw = inputView.readLine();
 
-        int tryCount = tryCountInputParser.parse(tryCountRaw);
+        int tryCount = tryCountInputParser.parse(raw);
         tryCountValidator.validate(tryCount);
+        return tryCount;
+    }
 
+    private void startRace(Cars cars, int tryCount) {
         outputView.printRaceStartHeader();
         for (int i = 0; i < tryCount; i++) {
             cars.moveCars(moveStrategy);
             outputView.printRoundResult(cars);
         }
+    }
 
+    private void showWinners(Cars cars) {
         outputView.printWinners(cars);
+    }
+
+    private List<String> parseAndValidateCarNames(String raw) {
+        List<String> names = carNameInputParser.parseCarNames(raw);
+        carNamesValidator.validate(names);
+        return names;
+    }
+
+    private List<Car> buildCars(List<String> names) {
+        List<Car> cars = new ArrayList<>();
+        for (String name : names) {
+            cars.add(new Car(name));
+        }
+        return cars;
     }
 }
